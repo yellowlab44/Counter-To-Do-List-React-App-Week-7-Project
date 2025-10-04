@@ -19,8 +19,19 @@ export default function NewCounterForm({ onAdd }) {
   function handleSubmit(e) {
     e.preventDefault(); // prevent browser reload
     // preventDefault() stops the browser from doing a full page reload when you submit the form
-    console.log("Form submitted! Name:", name, "Step:", step);
-    // You’ll later replace the console.log() with onAdd({ name, step }) to actually create a new counter.
+
+    const trimmed = name.trim();
+    const numericStep = Number(step)
+    if (!trimmed) return; // skip empty names
+    if (!Number.isFinite(numericStep) || numericStep < 1) return; // skip invalid steps
+    
+    // Send form data to the App
+    onAdd({ name: trimmed, step: numericStep });
+
+    // Reset form inputs
+    setName("");
+    setStep(1);
+
   }
 
   return (
