@@ -6,11 +6,18 @@
 //import { useState, useMemo } from "react";
 
 //import components:
-//import CounterList from "./components/CounterList.jsx";
-import {useState} from "react";
+
+// Add this after creating NewCounterForm.jsx(1st comp):
+import {useState, useMemo} from "react";
 import NewCounterForm from "./components/NewCounterForm.jsx";
+
+/// Add this line after creating CounterList.jsx(2nd comp):
+import CounterList from "./components/CounterList.jsx";
+
+// Add this line after creating useLocalStorage.js (custom hook):
 //import useLocalStorage from "./hooks/useLocalStorage.js";
 
+// Add new counter (called by NewCounterForm via onAdd)
 export default function App() {
   // 1) App-level state: array of counter objects
   const [counters, setCounters] = useState([]);
@@ -23,41 +30,80 @@ export default function App() {
     if (!trimmed) return; // skip empty names
     // ! means "not" - if name is empty, return (do nothing)
     
-
     setCounters((prev) => [...prev,
       { id, name: trimmed, step: numericStep, value: 0 },
     ]);
     // makes a new array that contains the old items + the new one: setCounters([...counters, newCounter]);
       // creates a fresh copy of the array, which React will always notice as “new,” causing a proper re-render
       // setCounters((prev) => [...prev, newCounter]) React passes the previous state value (prev) into your function, and you return the new value
-    //spread operator (...) creates a new array with existing counters + new one
+    // spread operator (...) creates a new array with existing counters + new one
     // new counter starts with value of 0
     // you can later add buttons to increment/decrement the value
     // React re-renders the component when state changes
   // each counter object: { id, name, step, count }
   }
+
+/// ADD more functions to update state and pass them to CounterList:
+  /// Increment/decrement helper
+  function updateValue(id, delta) {
+    setCounters((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, value: c.value + delta } : c))
+    );
+  }
+
+  /// Reset one counter
+  function resetValue(id) {
+    setCounters((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, value: 0 } : c))
+    );
+  }
+
+  /// Delete one counter
+  function deleteCounter(id) {
+    setCounters((prev) => prev.filter((c) => c.id !== id));
+  }
+
+  /// Rename one counter
+  function renameCounter(id, nextName) {
+    const trimmed = String(nextName || "").trim();
+    if (!trimmed) return;
+    setCounters((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, name: trimmed } : c))
+    );
+  }
+
+
   return (
     <div style={{ padding: 20, fontFamily: "system-ui" }}>
-      <h1>Multi-Counter</h1>
+      <header style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <h1 style={{ margin: 0 }}>Multi-Counter</h1>
+        <span style={{ opacity: 0.7 }}>Counters: {counters.length}</span>
+        <span style={{ opacity: 0.7 }}>Total: {total}</span>
+      </header>
 
-      {/* Pass the onAdd function to the form */}
-      <NewCounterForm onAdd={handleAddCounter} />
+      {/* Form to add a new counter */}
+      <div style={{ marginTop: 16 }}>
+        <NewCounterForm onAdd={handleAddCounter} />
+      </div>
 
-      {/* Minimal preview so you can SEE it working right now */}
-      <h2 style={{ marginTop: 16 }}>Counters:</h2>
-
-      {/* Render a message if no counters, if there are counters, list them */}
-      {counters.length === 0 ? (
-        <p>No counters yet.</p>
-      ) : (
-        <ul>
-          {counters.map(c => (
-            <li key={c.id}>
-              <strong>{c.name}</strong> — value: {c.value} (step {c.step})
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* List of counters with all handlers wired up */}
+      {/* Add this after creating CounterList.jsx (2nd comp) and the additional functions above:*/}
+      <div style={{ marginTop: 16 }}>
+        <CounterList
+          counters={counters}
+          onIncrement={(id) => {
+            const c = counters.find((x) => x.id === id);
+            if (c) updateValue(id, c.step);
+          }}
+          onDecrement={(id) => {
+            const c = counters.find((x) => x.id === id);
+            if (c) updateValue(id, -c.step);
+          }}
+          onReset={resetValue}
+          onDelete={deleteCounter}
+          onRename={renameCounter}
+        />
+      </div>
     </div>
   );
 }
