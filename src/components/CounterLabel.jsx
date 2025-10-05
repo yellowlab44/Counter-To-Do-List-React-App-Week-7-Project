@@ -1,3 +1,8 @@
+// WHAT IT DOES: It receives props from Counter.jsx for one counter: name, value, and onRename function
+// It renders the counter label and value, and allows renaming the counter
+// It doesn’t own any data itself — it just renders whatever is passed in
+// Grandchild of App.jsx (1st comp) via CounterList.jsx (2nd comp) and Counter.jsx (3rd comp)
+
 import { useState, useEffect } from "react";
 
 export default function CounterLabel({ name, value, onRename }) {
