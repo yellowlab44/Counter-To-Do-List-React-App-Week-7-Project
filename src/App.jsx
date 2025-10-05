@@ -7,8 +7,9 @@
 
 //import components:
 
-// Add this after creating NewCounterForm.jsx(1st comp):
+// Add these after creating NewCounterForm.jsx(1st comp):
 import {useState, useMemo} from "react";
+  // import hooks from React library ^
 import NewCounterForm from "./components/NewCounterForm.jsx";
 
 /// Add this line after creating CounterList.jsx(2nd comp):
@@ -21,7 +22,9 @@ import CounterList from "./components/CounterList.jsx";
 export default function App() {
   // 1) App-level state: array of counter objects
   const [counters, setCounters] = useState([]);
-  // 2) Handler the form will call
+  // 2️) Derived total value (this is the line we’re talking about)
+  const totalCount = counters.reduce((sum, c) => sum + c.value, 0);
+  // 3) Handler the form will call
   function handleAddCounter({ name, step }) {
     const id = String(Date.now()); // creates a simple unique ID based on timestamp
     const trimmed = name.trim();
@@ -72,13 +75,13 @@ export default function App() {
     );
   }
 
-
+// 4) Render the app UI:
   return (
     <div style={{ padding: 20, fontFamily: "system-ui" }}>
       <header style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <h1 style={{ margin: 0 }}>Multi-Counter</h1>
         <span style={{ opacity: 0.7 }}>Counters: {counters.length}</span>
-        <span style={{ opacity: 0.7 }}>Total: {total}</span>
+        <span style={{ opacity: 0.7 }}>Total: {totalCount}</span>
       </header>
 
       {/* Form to add a new counter */}
