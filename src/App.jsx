@@ -3,10 +3,7 @@
  // return <h1 style={{ padding: 20 }}>Hello from React ✅</h1>;
 //}
 
-//import { useState, useMemo } from "react";
-
 //import components:
-
 // Add these after creating NewCounterForm.jsx(1st comp):
 import {useState, useMemo} from "react";
   // import hooks from React library ^
@@ -77,12 +74,21 @@ export default function App() {
 
 // 4) Render the app UI:
   return (
+    <div className="app">
+      <header className="app__header">
+        <h1 className="app__title">Multi-Counter</h1>
+        <div className="summary">
+          <span className="badge">Counters: {counters.length}</span>
+          <span className="badge">Total: {totalCount}</span>
+        </div>
+      </header>
+    {/* Inline styles (no CSS file needed): can be changed to className attributes to sync with CSS file ^
     <div style={{ padding: 20, fontFamily: "system-ui" }}>
       <header style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <h1 style={{ margin: 0 }}>Multi-Counter</h1>
         <span style={{ opacity: 0.7 }}>Counters: {counters.length}</span>
         <span style={{ opacity: 0.7 }}>Total: {totalCount}</span>
-      </header>
+      </header>*/}
 
       {/* Form to add a new counter */}
       <div style={{ marginTop: 16 }}>

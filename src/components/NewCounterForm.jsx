@@ -35,29 +35,56 @@ export default function NewCounterForm({ onAdd }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-    {/* When the form is submitted, it calls handleSubmit
-    Which outputs what is rendered in the browser */}
-      <div>
-        <label>Counter name:</label>
+    <form className="form" onSubmit={handleSubmit}>
+      <div className="form__row">
+        <label htmlFor="counterName">Counter name:</label>
         <input
+          id="counterName"
+          className="input"
           type="text"
+          placeholder="e.g., Steps walked"
           value={name}
-          onChange={(e) => setName(e.target.value)} // update name as user types
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
 
-      <div>
-        <label>Increment step:</label>
+      <div className="form__row">
+        <label htmlFor="step">Increment step:</label>
         <input
+          id="step"
+          className="input"
           type="number"
           min="1"
           value={step}
-          onChange={(e) => setStep(e.target.value)} // update step
+          onChange={(e) => setStep(e.target.value)}
         />
       </div>
 
-      <button type="submit">Add Counter</button>
+      <button className="btn" type="submit">Add Counter</button>
     </form>
-  );
+
+);
 }
+
+// Alternative inline version without CSS file (goes inside return, replace above^):
+// <form onSubmit={handleSubmit}> When the form is submitted, it calls handleSubmit
+// Which outputs what is rendered in the browser 
+    //<div>
+    //  <label>Counter name:</label>
+      //<input
+        //type="text"
+        //value={name}
+        //onChange={(e) => setName(e.target.value)} // update name as user types
+      // />
+// </div>
+// <div>
+// <label>Increment step:</label>
+//  <input
+//      type="number"
+//       min="1"
+//       value={step}
+//       onChange={(e) => setStep(e.target.value)} // update step
+// />
+//    </div>
+//      <button type="submit">Add Counter</button>
+//    </form>
