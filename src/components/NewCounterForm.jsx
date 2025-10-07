@@ -42,7 +42,7 @@ export default function NewCounterForm({ onAdd }) {
           id="counterName"
           className="input"
           type="text"
-          placeholder="e.g., Steps walked"
+          placeholder="Example: Steps walked"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
